@@ -1,4 +1,19 @@
+/*
+ * jQuery Plugin: Tokenizing Autocomplete Text Entry
+ * Version 1.6.2
+ *
+ * Copyright (c) 2009 James Smith (http://loopj.com)
+ * Licensed jointly under the GPL and MIT licenses,
+ * choose which one suits your project best!
+ *
+ */
+ 
+jQuery( document ).ready(function( $ ) {
+// Code that uses jQuery's $ can follow here.
 
+
+///////////////////////////////////////////////////////////////////////////////
+ 
 ;(function ($) {
   var DEFAULT_SETTINGS = {
     // Search settings
@@ -132,13 +147,16 @@
   // Additional public (exposed) methods
   var methods = {
       init: function(url_or_data_or_function, options) {
-          var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
-
-          return this.each(function () {
-              $(this).data("settings", settings);
-              $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
-          });
-      },
+    var settings = $.extend({}, DEFAULT_SETTINGS, options || {});
+    return this.each(function() {
+        if ($(this).data("tokenInputObject")) {
+            // TokenInput already initialized, return existing instance
+            return $(this).data("tokenInputObject");
+        }
+        $(this).data("settings", settings);
+        $(this).data("tokenInputObject", new $.TokenList(this, url_or_data_or_function, settings));
+    });
+},
       clear: function() {
           this.data("tokenInputObject").clear();
           return this;
@@ -928,6 +946,29 @@
 
               item.addClass($(input).data("settings").classes.selectedDropdownItem);
               selected_dropdown_item = item.get(0);
+			  
+/*
+Code que j'ai ajoute pour permettre le deroulement horizontale. OJM
+*/			  
+			  
+			  if (selected_dropdown_item) {
+    var selectedTop = $(selected_dropdown_item).offset().top;
+    var selectedBottom = selectedTop + $(selected_dropdown_item).outerHeight();
+    var ddTop = $(dropdown).offset().top
+    var ddBottom = ddTop + $(dropdown).outerHeight();
+    var ddScrollTop = $(dropdown).scrollTop();
+
+    if (selectedBottom > ddBottom) {
+        $(dropdown).scrollTop(ddScrollTop + (selectedBottom - ddBottom));
+    } else if (ddTop > selectedTop) {
+        $(dropdown).scrollTop(ddScrollTop + (selectedTop - ddTop));
+    }
+}
+
+/*
+Fin de Code que j'ai ajoute pour permettre le deroulement horizontale. OJM
+*/			  
+
           }
       }
 
@@ -1096,3 +1137,9 @@
   };
 
 }(jQuery));
+
+
+		
+///////////////////////////////////////////////////////////////////////////////
+
+});
