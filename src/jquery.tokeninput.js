@@ -1,11 +1,10 @@
 /*
+Modified to enable it to  be called via ajax without duplicate. Modification by Max KANTCHEDE
  * jQuery Plugin: Tokenizing Autocomplete Text Entry
  * Version 1.6.2
- *
  * Copyright (c) 2009 James Smith (http://loopj.com)
  * Licensed jointly under the GPL and MIT licenses,
  * choose which one suits your project best!
- *
  */
  
 jQuery( document ).ready(function( $ ) {
